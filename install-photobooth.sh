@@ -5,7 +5,7 @@ set -e
 
 USERNAME=''
 WEBSERVER="apache"
-SILENT_INSTALL=false
+SILENT_INSTALL=true
 RUNNING_ON_PI=true
 FORCE_RASPBERRY_PI=false
 DATE=$(date +"%Y%m%d-%H-%M")
@@ -17,7 +17,7 @@ PHOTOBOOTH_TMP_LOG="/tmp/$DATE-photobooth.txt"
 GPHOTO_VERSION="2_5_23"
 # Clean previous GPHOTO installs present on debian. Assume uuid 1000
 umount /run/user/1000/gvfs || echo "gvfs not mounted"
-kill -9 -r gphoto
+killall -9 -r gphoto || echo "no process gphoto present"
 find / -name "*gphoto*" -exec sudo rm -rf {} \;
 # TVD END
 
