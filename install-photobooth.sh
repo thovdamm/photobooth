@@ -37,7 +37,7 @@ CHROME_FLAGS=false
 CHROME_DEFAULT_FLAGS="--noerrdialogs --disable-infobars --disable-features=Translate --no-first-run --check-for-update-interval=31536000 --touch-events=enabled --password-store=basic"
 AUTOSTART_FILE=""
 DESKTOP_OS=true
-PHP_VERSION="7.4"
+PHP_VERSION="8.0"
 
 # Update
 RUN_UPDATE=false
