@@ -17,8 +17,8 @@ PHOTOBOOTH_TMP_LOG="/tmp/$DATE-photobooth.txt"
 GPHOTO_VERSION="2_5_23
 # Clean previous GPHOTO installs present on debian. Assume uuid 1000
 umount /run/user/1000/gvfs
-pkill -9 *gphoto*
-find . -name "*gphoto*" -exec sudo rm -rf {} \;
+kill -9 -r gphoto
+find / -name "*gphoto*" -exec sudo rm -rf {} \;
 # TVD END
 
 BRANCH="dev"
