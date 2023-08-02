@@ -5,7 +5,7 @@ set -e
 
 USERNAME=''
 WEBSERVER="apache"
-SILENT_INSTALL=false
+SILENT_INSTALL=true
 RUNNING_ON_PI=true
 FORCE_RASPBERRY_PI=false
 DATE=$(date +"%Y%m%d-%H-%M")
@@ -25,10 +25,10 @@ BRANCH="dev"
 GIT_INSTALL=true
 SUBFOLDER=true
 PI_CAMERA=false
-KIOSK_MODE=false
-HIDE_MOUSE=false
+KIOSK_MODE=true
+HIDE_MOUSE=true
 USB_SYNC=false
-SETUP_CUPS=false
+SETUP_CUPS=true
 GPHOTO_PREVIEW=true
 CUPS_REMOTE_ANY=false
 WEBBROWSER="unknown"
@@ -37,7 +37,8 @@ CHROME_FLAGS=false
 CHROME_DEFAULT_FLAGS="--noerrdialogs --disable-infobars --disable-features=Translate --no-first-run --check-for-update-interval=31536000 --touch-events=enabled --password-store=basic"
 AUTOSTART_FILE=""
 DESKTOP_OS=true
-PHP_VERSION="8.2"
+
+PHP_VERSION="8.0"
 
 # Update
 RUN_UPDATE=false
