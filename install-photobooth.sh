@@ -5,7 +5,7 @@ set -e
 
 USERNAME=''
 WEBSERVER="apache"
-SILENT_INSTALL=true
+SILENT_INSTALL=false
 RUNNING_ON_PI=true
 FORCE_RASPBERRY_PI=false
 DATE=$(date +"%Y%m%d-%H-%M")
@@ -16,7 +16,7 @@ PHOTOBOOTH_TMP_LOG="/tmp/$DATE-photobooth.txt"
 # GPHOTO Version 2.5.23 for canon EOS 2000D (else bugs..)
 GPHOTO_VERSION="2_5_23"
 # Clean previous GPHOTO installs present on debian. Assume uuid 1000
-umount /run/user/1000/gvfs
+umount /run/user/1000/gvfs || echo "gvfs not mounted"
 kill -9 -r gphoto
 find / -name "*gphoto*" -exec sudo rm -rf {} \;
 # TVD END
@@ -25,10 +25,10 @@ BRANCH="dev"
 GIT_INSTALL=true
 SUBFOLDER=true
 PI_CAMERA=false
-KIOSK_MODE=true
-HIDE_MOUSE=true
+KIOSK_MODE=false
+HIDE_MOUSE=false
 USB_SYNC=false
-SETUP_CUPS=true
+SETUP_CUPS=false
 GPHOTO_PREVIEW=true
 CUPS_REMOTE_ANY=false
 WEBBROWSER="unknown"
@@ -38,7 +38,8 @@ CHROME_DEFAULT_FLAGS="--noerrdialogs --disable-infobars --disable-features=Trans
 AUTOSTART_FILE=""
 DESKTOP_OS=true
 
-PHP_VERSION="8.0"
+PHP_VERSION="8.2"
+
 
 # Update
 RUN_UPDATE=false
