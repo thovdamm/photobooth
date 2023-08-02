@@ -12,6 +12,15 @@ DATE=$(date +"%Y%m%d-%H-%M")
 IPADDRESS=$(hostname -I | cut -d " " -f 1)
 PHOTOBOOTH_TMP_LOG="/tmp/$DATE-photobooth.txt"
 
+#TVD
+# GPHOTO Version 2.5.23 for canon EOS 2000D (else bugs..)
+GPHOTO_VERSION="2_5_23
+# Clean previous GPHOTO installs present on debian. Assume uuid 1000
+umount /run/user/1000/gvfs
+pkill -9 *gphoto*
+find . -name "*gphoto*" -exec sudo rm -rf {} \;
+# TVD END
+
 BRANCH="dev"
 GIT_INSTALL=true
 SUBFOLDER=true
@@ -410,7 +419,11 @@ common_software() {
             if [[ ${package} == "gphoto2" ]]; then
                 info "            Installing latest stable release."
                 wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh
-                wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/.env
+                #wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/.env
+
+                echo "LATEST_STABLE_LIBGPHOTO_VERSION=$GPHOTO_VERSION" >> .env
+                echo "LATEST_STABLE_GPHOTO_VERSION=$GPHOTO_VERSION" >> .env
+
                 chmod +x gphoto2-updater.sh
                 ./gphoto2-updater.sh --stable
                 rm gphoto2-updater.sh
@@ -532,12 +545,12 @@ add_git_remote() {
     info "### Checking needed remote information..."
     if git config remote.photoboothproject.url > /dev/null; then
         info "### photoboothproject remote exist already"
-        if git config remote.origin.url == "git@github.com:andi34/photobooth" || git config remote.origin.url == "https://github.com/andi34/photobooth.git"; then
-            info "origin remote is andi34"
+        if git config remote.origin.url == "git@github.com:thovdamm/photobooth" || git config remote.origin.url == "https://github.com/thovdamm/photobooth.git"; then
+            info "origin remote is thovdamm"
         fi
     else
         info "### Adding photoboothproject remote..."
-        git remote add photoboothproject https://github.com/PhotoboothProject/photobooth.git
+        git remote add photoboothproject https://github.com/thovdamm/photobooth.git
     fi
 }
 
@@ -585,13 +598,13 @@ start_git_install() {
 start_install() {
     info "### Now we are going to install Photobooth."
     if [ $GIT_INSTALL = true ]; then
-        git clone https://github.com/PhotoboothProject/photobooth $INSTALLFOLDER
+        git clone https://github.com/thovdamm/photobooth $INSTALLFOLDER
         cd $INSTALLFOLDERPATH
         add_git_remote
         start_git_install
     else
         info "### We are downloading the latest release and extracting it to $INSTALLFOLDERPATH."
-        curl -s https://api.github.com/repos/PhotoboothProject/photobooth/releases/latest |
+        curl -s https://api.github.com/repos/thovdamm/photobooth/releases/latest |
             jq '.assets[].browser_download_url | select(endswith(".tar.gz"))' |
             xargs curl -L --output /tmp/photobooth-latest.tar.gz
 
@@ -832,8 +845,8 @@ cups_setup() {
 
 gphoto_preview() {
     if [ -d "/etc/systemd/system" ] && [ -d "/usr" ]; then
-        wget https://raw.githubusercontent.com/PhotoboothProject/photobooth/dev/gphoto/ffmpeg-webcam.service -O "/etc/systemd/system/ffmpeg-webcam.service"
-        wget https://raw.githubusercontent.com/PhotoboothProject/photobooth/dev/gphoto/ffmpeg-webcam.sh -O "/usr/ffmpeg-webcam.sh"
+        wget https://raw.githubusercontent.com/thovdamm/photobooth/dev/gphoto/ffmpeg-webcam.service -O "/etc/systemd/system/ffmpeg-webcam.service"
+        wget https://raw.githubusercontent.com/thovdamm/photobooth/dev/gphoto/ffmpeg-webcam.sh -O "/usr/ffmpeg-webcam.sh"
         chmod +x "/usr/ffmpeg-webcam.sh"
         systemctl start ffmpeg-webcam.service
         systemctl enable ffmpeg-webcam.service
