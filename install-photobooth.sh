@@ -509,8 +509,8 @@ common_software() {
                 curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --yes --dearmor -o /usr/share/keyrings/yarnkey.gpg
                 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list > /dev/null
                 apt update
-            fi
-            if [[ ${package} == "gphoto2" ]]; then
+            
+            elif [[ ${package} == "gphoto2" ]]; then
                 info "            Installing release $GPHOTO_VERSION"
                 clean_gphoto2_install
                 wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh
@@ -524,12 +524,13 @@ common_software() {
                 info $gphoto2 --version
                 rm gphoto2-updater.sh
                 rm .env
-            if  [[ ${package} == "python3-gphoto2" ]]; then       
+            elif  [[ ${package} == "python3-gphoto2" ]]; then       
                 pip3 install python3-gphoto2==1.9.0
                 info "Installed python3-gphoto2, version 1.9.0"
             
             else
                 apt-get -qq install -y ${package}
+            fi
         fi
     done
 
