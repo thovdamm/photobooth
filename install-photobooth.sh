@@ -967,8 +967,8 @@ cups_setup() {
 gphoto_preview() {
     if [ -d "/etc/systemd/system" ] && [ -d "/usr" ]; then
 
-        wget https://raw.githubusercontent.com/thovdamm/photobooth/dev/gphoto/ffmpeg-webcam.service -O "/etc/systemd/system/ffmpeg-webcam.service"
-        wget https://raw.githubusercontent.com/thovdamm/photobooth/dev/gphoto/ffmpeg-webcam.sh -O "/usr/ffmpeg-webcam.sh"
+        wget https://raw.githubusercontent.com/thovdamm/photobooth/dev/scripts/gphoto/ffmpeg-webcam.service -O "/etc/systemd/system/ffmpeg-webcam.service"
+        wget https://raw.githubusercontent.com/thovdamm/photobooth/dev/scripts/gphoto/ffmpeg-webcam.sh -O "/usr/ffmpeg-webcam.sh"
         chmod +x "/usr/ffmpeg-webcam.sh"
         systemctl start ffmpeg-webcam.service
         systemctl enable ffmpeg-webcam.service
