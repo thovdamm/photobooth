@@ -29,7 +29,7 @@ function clean_gphoto2_install {
     apt remove *gphoto* -y
     umount /run/user/1000/gvfs || echo "gvfs not mounted"
     killall -9 -r gphoto || echo "no process gphoto present"
-    find / -name "*gphoto*" -exec sudo rm -rf {} \;
+    #find / -name "*gphoto*" -exec sudo rm -rf {} \;
 }
 # TVD END
 
