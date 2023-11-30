@@ -655,7 +655,7 @@ add_git_remote() {
         fi
     else
         info "### Adding photoboothproject remote..."
-        git remote add photoboothproject https://github.com/thovdamm/photobooth.git
+        sudo -u www-data git remote add photoboothproject https://github.com/thovdamm/photobooth.git
     fi
 }
 
