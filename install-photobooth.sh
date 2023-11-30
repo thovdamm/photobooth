@@ -527,7 +527,7 @@ common_software() {
             if  [[ ${package} == "python3-gphoto2" ]]; then       
                 pip3 install python3-gphoto2==1.9.0
                 info "Installed python3-gphoto2, version 1.9.0"
-            fi
+            
             else
                 apt-get -qq install -y ${package}
         fi
