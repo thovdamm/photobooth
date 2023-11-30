@@ -530,7 +530,6 @@ common_software() {
             fi
             else
                 apt-get -qq install -y ${package}
-#adapted install script; removing previous installs of libgphoto, setting specific gphoto version and thovdamm's repo as git
         fi
     done
 
