@@ -15,12 +15,25 @@ PHOTOBOOTH_TMP_LOG="/tmp/$DATE-photobooth.txt"
 #TVD
 # GPHOTO Version 2.5.23 for canon EOS 2000D (else bugs..)
 GPHOTO_VERSION="2_5_23"
-# Clean previous GPHOTO installs present on debian. Assume uuid 1000
-umount /run/user/1000/gvfs || echo "gvfs not mounted"
-killall -9 -r gphoto || echo "no process gphoto present"
-find / -name "*gphoto*" -exec sudo rm -rf {} \;
+
+# Update php to latest version
+apt update
+apt install lsb-release
+curl https://packages.sury.org/php/apt.gpg | sudo tee /usr/share/keyrings/suryphp-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/suryphp-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+apt update -y
+apt upgrade php -y
+php --version
+
+function clean_gphoto2_install {
+    apt remove *gphoto* -y
+    umount /run/user/1000/gvfs || echo "gvfs not mounted"
+    killall -9 -r gphoto || echo "no process gphoto present"
+    find / -name "*gphoto*" -exec sudo rm -rf {} \;
+}
 # TVD END
 
+# The following arguments must be changed to corresponding calls of "ask_yes_no" to the standard value chosen. Setting this here will not be sufficient.
 BRANCH="dev"
 GIT_INSTALL=true
 SUBFOLDER=true
@@ -67,7 +80,8 @@ NPM_NEEDS_UPDATE=false
 NPM_CHECKED=false
 
 COMMON_PACKAGES=(
-        'gphoto2'
+
+        'ffmpeg'
         'libimage-exiftool-perl'
         'nodejs'
         'php-gd'
@@ -75,6 +89,10 @@ COMMON_PACKAGES=(
         'php-zip'
         'php-mbstring'
         'python3'
+        'python3-gphoto2'
+        'gphoto2'        
+        'python3-psutil'
+        'python3-zmq'
         'rsync'
         'udisks2'
 )
@@ -492,7 +510,8 @@ common_software() {
                 apt update
             fi
             if [[ ${package} == "gphoto2" ]]; then
-                info "            Installing latest stable release."
+                info "            Installing release $GPHOTO_VERSION"
+                clean_gphoto2_install
                 wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/gphoto2-updater.sh
                 #wget https://raw.githubusercontent.com/gonzalo/gphoto2-updater/master/.env
 
@@ -501,8 +520,13 @@ common_software() {
 
                 chmod +x gphoto2-updater.sh
                 ./gphoto2-updater.sh --stable
+                info $gphoto2 --version
                 rm gphoto2-updater.sh
                 rm .env
+            if  [[ ${package} == "python3-gphoto2" ]]; then       
+                pip3 install python3-gphoto2==1.9.0
+                info "Installed python3-gphoto2, version 1.9.0"
+            fi
             else
                 apt-get -qq install -y ${package}
 #adapted install script; removing previous installs of libgphoto, setting specific gphoto version and thovdamm's repo as git
@@ -1131,7 +1155,7 @@ if [ "$RUN_UPDATE" = true ]; then
         print_spaces
         echo -e "\033[0;33m### While updating your system the v4l2loopback module might get broken (needed for preview from DSLR). "
         echo -e "### Instructions to fix it can be found at https://photoboothproject.github.io/Update-Photobooth"
-        ask_yes_no "          Do you like to update your system and install/update needed software? [y/N] " "n"
+        ask_yes_no "          Do you like to update your system and install/update needed software? [y/N] " "Y"
         echo -e "\033[0m"
         if [ "$REPLY" != "${REPLY#[Yy]}" ]; then
             info "### We will update your system and install/update needed software."
@@ -1274,7 +1298,7 @@ fi
     echo -e "\033[0;33m### Do you like to install a service to set up a virtual webcam that gphoto2 can stream video to"
     echo -e "### (needed for preview from gphoto2)? Your camera must be supported by gphoto2 for liveview."
     echo -e "### Note: This will disable other webcam interfaces on a Raspberry Pi (e.g. Pi Camera)."
-    ask_yes_no "### If unsure, type N. [y/N] " "N"
+    ask_yes_no "### If unsure, type N. [y/N] " "Y"
     echo -e "\033[0m"
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         GPHOTO_PREVIEW=true
