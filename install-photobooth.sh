@@ -34,6 +34,7 @@ function clean_gphoto2_install {
 # TVD END
 
 # The following arguments must be changed to corresponding calls of "ask_yes_no" to the standard value chosen. Setting this here will not be sufficient.
+
 BRANCH="dev"
 GIT_INSTALL=true
 SUBFOLDER=true
