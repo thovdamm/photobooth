@@ -525,7 +525,7 @@ common_software() {
                 rm gphoto2-updater.sh
                 rm .env
             elif  [[ ${package} == "python3-gphoto2" ]]; then       
-                pip3 install python3-gphoto2==1.9.0
+                pip install python3-gphoto2==1.9.0 --break-system-packages
                 info "Installed python3-gphoto2, version 1.9.0"
             
             else
